@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WebXeHoi.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            
+                <th>Tên</th>
+                <th>Giá</th>
+                <th>Mô tả</th>
+                <th>Ảnh</th>
+                <th>Loại</th>
+                <th></th>
+                <th>Chức năng</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+               
+                <td>
+                    @if (item.ImageUrl != null)
+                    {
+                        <img src="@item.ImageUrl" width="100px" class="img-thumbnail" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                        <input type="hidden" name="productId" value="@item.Id" />
+                        <label for="quantity">Số lượng:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" />
+                        <button class="btn btn-info" type="submit">Thêm vào giỏ hàng</button>
+                    </form>
+                </td>
+               
+
+                
+                <td>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm px-3">
+                            View
+                        </a>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info text-white btn-sm px-3">
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm px-3"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                            Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
